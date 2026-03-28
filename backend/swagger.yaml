@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Mini Event Management API
+  version: 1.0.0
+  description: API for managing events, bookings, and attendance
+servers:
+  - url: http://localhost:3000
+    description: Local server
+paths:
+  /events:
+    get:
+      summary: Get all events
+      responses:
+        '200':
+          description: A list of events
+    post:
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - date
+                - total_capacity
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                date:
+                  type: string
+                  format: date-time
+                total_capacity:
+                  type: integer
+      responses:
+        '201':
+          description: Created event
+        '400':
+          description: Validation error
+  /bookings:
+    post:
+      summary: Book a ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - event_id
+              properties:
+                user_id:
+                  type: integer
+                event_id:
+                  type: integer
+      responses:
+        '201':
+          description: Booking successful
+        '400':
+          description: Sold out or validation error
+  /users/{id}/bookings:
+    get:
+      summary: Get user bookings
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of user bookings
+  /events/{id}/attendance:
+    post:
+      summary: Mark attendance
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - booking_code
+              properties:
+                booking_code:
+                  type: string
+      responses:
+        '200':
+          description: Attendance marked successfully
+        '400':
+          description: Validation error
+        '404':
+          description: Invalid booking code

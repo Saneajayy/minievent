@@ -1,0 +1,49 @@
+{
+  "info": {
+    "name": "Mini Event Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Events",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:3000/events", "host": ["http://localhost:3000"], "path": ["events"] }
+      }
+    },
+    {
+      "name": "Create Event",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\"title\": \"Tech Meetup\", \"description\": \"Annual tech meetup\", \"date\": \"2023-12-01T10:00:00Z\", \"total_capacity\": 100}" },
+        "url": { "raw": "http://localhost:3000/events", "host": ["http://localhost:3000"], "path": ["events"] }
+      }
+    },
+    {
+      "name": "Book Ticket",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\"user_id\": 1, \"event_id\": 1}" },
+        "url": { "raw": "http://localhost:3000/bookings", "host": ["http://localhost:3000"], "path": ["bookings"] }
+      }
+    },
+    {
+      "name": "User Bookings",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:3000/users/1/bookings", "host": ["http://localhost:3000"], "path": ["users", "1", "bookings"] }
+      }
+    },
+    {
+      "name": "Mark Attendance",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\"booking_code\": \"uuid-string-here\"}" },
+        "url": { "raw": "http://localhost:3000/events/1/attendance", "host": ["http://localhost:3000"], "path": ["events", "1", "attendance"] }
+      }
+    }
+  ]
+}
