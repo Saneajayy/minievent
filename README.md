@@ -44,12 +44,12 @@ mysql -u root -p < backend/schema.sql
 
 ## 🌍 Deployment
 
-### 1. Database (PlanetScale / Railway)
+### 1. Database (Railway)
 - Provision a MySQL database on Railway or PlanetScale.
 - Execute `schema.sql` in the new database.
 - Obtain the `DATABASE_URL` or equivalent credentials.
 
-### 2. Backend (Render / Railway / Fly.io)
+### 2. Backend (Render)
 - Connect your GitHub repository to your host.
 - Set the root directory to `backend`.
 - Add environment variables (`DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`).
