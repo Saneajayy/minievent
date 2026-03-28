@@ -1,3 +1,5 @@
+# SEE LIVE WEBSITE HERE - https://minievent-frontend.vercel.app
+
 # Mini Event Management System
 
 A production-ready full-stack application built with Express.js, Next.js, and MySQL. Provides clean REST APIs for managing events, robust concurrent booking using database transactions, and a minimal, responsive white-themed UI.
