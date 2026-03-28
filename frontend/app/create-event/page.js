@@ -2,9 +2,12 @@
 import { useState } from 'react';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/authContext';
+import Link from 'next/link';
 
 export default function CreateEvent() {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -27,8 +30,24 @@ export default function CreateEvent() {
     } catch (err) {
       setError(err.response?.data?.errors?.[0]?.msg || err.response?.data?.error || 'Failed to create event');
       setLoading(false);
+      setLoading(false);
     }
   };
+
+  if (authLoading) return null;
+
+  if (!user || user.role !== 'admin') {
+    return (
+      <div className="max-w-lg mx-auto mt-20 text-center border p-10 rounded-xl bg-gray-50 flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-3 text-black">Admin Access Required</h2>
+        <p className="text-gray-600 mb-8 max-w-sm">If you are an administrator and want to create a new event, please login with your admin credentials.</p>
+        <div className="flex gap-4">
+            <Link href="/login" className="bg-black text-white px-6 py-2.5 rounded-md hover:bg-gray-800 transition font-medium">Login as Admin</Link>
+            <Link href="/register" className="bg-white text-black border border-gray-300 px-6 py-2.5 rounded-md hover:bg-gray-50 transition font-medium">Register</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-lg mx-auto space-y-8 animate-in fade-in duration-500 mt-10">

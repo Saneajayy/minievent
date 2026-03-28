@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const eventController = require('../controllers/eventController');
+const { verifyToken, isAdmin } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -8,6 +9,8 @@ router.get('/', eventController.getAllEvents);
 
 router.post(
     '/',
+    verifyToken,
+    isAdmin,
     [
         body('title').notEmpty().withMessage('Title is required'),
         body('date').isISO8601().withMessage('Valid date is required'),

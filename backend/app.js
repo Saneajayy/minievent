@@ -8,6 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 const eventRoutes = require('./src/routes/eventRoutes');
 const bookingRoutes = require('./src/routes/bookingRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+const authRoutes = require('./src/routes/authRoutes');
 const errorHandler = require('./src/middlewares/errorHandler');
 
 const app = express();
@@ -24,6 +25,7 @@ try {
 }
 
 // Routes
+app.use('/auth', authRoutes);
 app.use('/events', eventRoutes);
 app.use('/bookings', bookingRoutes);
 app.use('/users', userRoutes);

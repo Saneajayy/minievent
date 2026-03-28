@@ -29,16 +29,35 @@ class BookingModel {
                 [eventId]
             );
 
-            const bookingCode = uuidv4();
-
-            // Insert booking
-            const [result] = await connection.query(
-                'INSERT INTO bookings (user_id, event_id, booking_code) VALUES (?, ?, ?)',
-                [userId, eventId, bookingCode]
+            // Check if booking already exists for this user and event
+            const [existingBookings] = await connection.query(
+                'SELECT id, booking_code, seats FROM bookings WHERE user_id = ? AND event_id = ? FOR UPDATE',
+                [userId, eventId]
             );
 
+            let bookingCode;
+            let insertId;
+
+            if (existingBookings.length > 0) {
+                // Update seats count instead of making a new row
+                bookingCode = existingBookings[0].booking_code;
+                insertId = existingBookings[0].id;
+                await connection.query(
+                    'UPDATE bookings SET seats = seats + 1 WHERE id = ?',
+                    [insertId]
+                );
+            } else {
+                // Insert a brand new booking
+                bookingCode = uuidv4();
+                const [result] = await connection.query(
+                    'INSERT INTO bookings (user_id, event_id, booking_code, seats) VALUES (?, ?, ?, 1)',
+                    [userId, eventId, bookingCode]
+                );
+                insertId = result.insertId;
+            }
+
             await connection.commit();
-            return { id: result.insertId, user_id: userId, event_id: eventId, booking_code: bookingCode };
+            return { id: insertId, user_id: userId, event_id: eventId, booking_code: bookingCode };
         } catch (error) {
             await connection.rollback();
             throw error;
@@ -49,7 +68,7 @@ class BookingModel {
 
     static async findByUserId(userId) {
         const [rows] = await pool.query(
-            `SELECT b.id, b.booking_code, b.booking_date, e.title as event_title, e.date as event_date, e.id as event_id
+            `SELECT b.id, b.booking_code, b.booking_date, b.seats, e.title as event_title, e.date as event_date, e.id as event_id
              FROM bookings b
              JOIN events e ON b.event_id = e.id
              WHERE b.user_id = ?

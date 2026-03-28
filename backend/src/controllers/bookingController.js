@@ -8,7 +8,8 @@ exports.bookTicket = async (req, res, next) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { user_id, event_id } = req.body;
+        const { event_id } = req.body;
+        const user_id = req.user.id;
         
         const booking = await BookingModel.createBooking(user_id, event_id);
         

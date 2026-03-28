@@ -47,7 +47,10 @@ export default function Home() {
           {events.map((event) => (
             <div key={event.id} className="group flex flex-col justify-between border border-gray-200 rounded-xl p-5 hover:border-black transition duration-300 bg-white">
               <div>
-                <h2 className="text-xl font-bold text-black mb-1 group-hover:underline">{event.title}</h2>
+                <div className="flex justify-between items-start mb-1">
+                  <h2 className="text-xl font-bold text-black group-hover:underline">{event.title}</h2>
+                  <span className="text-xs font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">ID: {event.id}</span>
+                </div>
                 <p className="text-sm text-gray-500 mb-4 h-10 overflow-hidden text-ellipsis line-clamp-2">{event.description}</p>
                 
                 <div className="flex justify-between items-center text-sm font-medium mb-5">
