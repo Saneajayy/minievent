@@ -35,7 +35,7 @@ export default function Login() {
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         <input 
                             type="email" required
-                            placeholder="Admin: admin@example.com | User: user@example.com"
+                            placeholder="Admin: admin@admin.com | User: user@example.com"
                             className="w-full border border-gray-300 rounded-md p-2 focus:border-black focus:ring-black outline-none transition text-sm"
                             value={email} onChange={e => setEmail(e.target.value)}
                         />
